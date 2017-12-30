@@ -1,0 +1,51 @@
+{%  extends "layout.twig" %}
+
+{% block content %}
+
+<div  class="bg-white p-30 m-t-10 brad b-bot-2px-gray-light b-right-1px-gray-light">
+
+
+            {%  if flash.success %}
+                <div class="alert alert-success">
+                    {{ flash.success }}
+                </div>
+            {% endif %}
+            {%  if flash.error %}
+                <div class="alert alert-danger">
+                    {{ flash.error }}
+                </div>
+            {% endif %}
+
+            <div style="text-align: center">
+                <h2 class="text-center p-b-30 m-t-0 page-header">Your Logs</h2>
+                <p>Everything we have to keep about you. Automatically deleted after 1 year.</p><br />
+            </div>
+
+            <table class="table table-striped table-hover ">
+                <thead>
+                <tr>
+                    <th>Port</th>
+                    <th>Client IP</th>
+                    <th>Shared IP</th>
+                    <th>Start Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in logs %}
+                    <tr>
+                        <td>{{ item.log_remote_port }}</td>
+                        <td>{{ item.log_trusted_ip }}</td>
+                        <td>{{ item.log_remote_ip }}</td>
+                        <td>{{ item.log_start_time }}</td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+</div>
+
+
+    <!-- /#page-wrapper -->
+
+
+{% endblock %}

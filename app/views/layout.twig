@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>VPNSox :: CP</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="js/lib/modernizr.js"></script>
+</head>
+<body class="bg-gray-light">
+
+<nav class="navbar navbar-fixed-top not-collapse bg-g-ln-gray" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#" class="hover-white-shade-bg">
+            VPNSox CP
+            <small class="font-w-100 text-gray-alt hidden-xs hidden-sm">Beta</small>
+        </a>
+    </div>
+    <div id="top-nav">
+        <div class="navbar-dropdown navbar-right navbar-avatar">
+            <a href="#" data-target="#topavatar-toggle" class="hover-no-underline dropdown-toggle m-lr-30 mm-lr-10" data-toggle="dropdown">
+                <img src="placeholders/avatars/avatar.jpg" class="img-circle" width=25>
+                <span class="text-gray-light hidden-sm hidden-xs">{{ account.username }}</span>
+                <span class="caret text-white hidden-sm hidden-xs"></span>
+            </a>
+            <ul id="topavatar-toggle" class="dropdown-menu avatar-dropdown">
+                <li><a href="#">Settings</a></li>
+                <li><a href="{{ path_for('logout') }}">Logout</a></li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+
+<div class="sidebar bg-gray-dark text-white text-center pushy pushy-left">
+    <header class="bg-g-ln-gray p-tb-30 pm-tb-10 p-lr-10 b-bot-2px-gray-dark hidden-xs">
+        <a href="#" data-target="#avatar-toggle" class="hover-no-underline dropdown-toggle" data-toggle="dropdown">
+            <img src="placeholders/avatars/avatar.jpg" class="img-circle" width=35>
+            <span class="text-gray-alt">Welcome</span>
+            <span class="text-gray-light">{{ account.username }}</span>
+            <span class="caret white"></span>
+        </a>
+    </header>
+    <ul id="avatar-toggle" class="dropdown-sidebar-avatar" role="menu" aria-labelledby="dLabel">
+        <li><a href="#">Settings</a></li>
+        <li><a href="{{ path_for('logout') }}">Sign out</a></li>
+    </ul>
+
+    <hr class="no-margin">
+
+    <ul class="unstyled nav">
+        <li><a href="{{ path_for('root') }}" class="text-left">Dashboard</a></li>
+        <li><a href="{{ path_for('payments') }}" class="text-left">Payments</a></li>
+        <li><a href="{{ path_for('logs') }}" class="text-left">Logs</a></li>
+        <li><a href="{{ path_for('config') }}" class="text-left">Download Config</a></li>
+        <li>
+            <a href="#" class="text-left dropdown-toggle" data-toggle="dropdown">
+                Help & Support
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="https://forum.vpnsox.org">Forum</a></li>
+                <li><a href="https://discord.gg/qNc4t5W">Discord (like irc)</a></li>
+            </ul>
+        </li>
+        <li><a href="{{ path_for('tos') }}" class="text-left">Tos</a></li>
+
+    </ul>
+
+    <!--<div class="sidebar-chart chart m-t-30" data-percent="73" data-scale-color="rgba(255,255,255,.2)">
+        <div class="percentage text-gray-alt font-w-100">73%</div>
+        <div class="label text-gray-alt font-w-100 text-uppercase">Bandwidth</div>
+    </div> -->
+
+</div>
+
+<div class="preloader">
+    <div class="timer"></div>
+</div>
+
+<div id="container" class="main-content p-30 tp-t-60 tp-lr-10">
+    {% block content %}{% endblock %}
+</div> <!-- /main content -->
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://code.jquery.com/jquery.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/lib/bootstrap.js"></script>
+
+<script src="js/lib/pushy.js"></script>
+
+<script src="js/lib/icheck.js"></script>
+
+<script src="js/lib/easypiechart.js"></script>
+
+<script src="js/lib/bootstrap-select.js"></script>
+
+<script src="js/admin.js"></script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+{%  extends "connexion.twig" %}
+
+{% block content %}
+    {%  if flash.success %}
+        <div class="alert alert-success">
+            {{ flash.success }}
+        </div>
+    {% endif %}
+    {%  if flash.error %}
+        <div class="alert alert-danger">
+            {{ flash.error }}
+            <ul>
+                {%  if flash.errors.username %}
+                    <li>{{ flash.errors.username }}</li>
+                {% endif %}
+                {%  if flash.errors.password %}
+                    <li>{{ flash.errors.password }}</li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+<h1>VPNSox Login</h1>
+    <form method="post" action="{{ path_for('login') }}">
+    {{ csrf() }}
+    <input type="text" name="username" placeholder="Username" required="required" />
+    <input type="password" name="password" placeholder="Password" required="required" />
+    <button type="submit" class="btn btn-primary btn-block btn-large">Let me in.</button><br />
+    <a class="btn btn-warning btn-block btn-large" href="{{ path_for('register') }}" style="text-decoration: none;">Create Account ?</a>
+</form>
+
+{% endblock %}

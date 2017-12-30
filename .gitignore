@@ -1,0 +1,9 @@
+/vendor
+/cache
+/logs
+/assets/lib
+/db
+.DS_STORE
+composer.lock
+*.sublime-workspace
+*.sublime-project

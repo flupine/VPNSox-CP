@@ -1,0 +1,46 @@
+{%  extends "connexion.twig" %}
+
+{% block content %}
+
+    {%  if flash.success %}
+        <div class="alert alert-success">
+            {{ flash.success }}
+        </div>
+    {% endif %}
+    {%  if flash.error %}
+        <div class="alert alert-danger">
+            {{ flash.error }}
+            <ul>
+                {%  if flash.errors.user_exist %}
+                    <li>{{ flash.errors.user_exist }}</li>
+                {% endif %}
+                {%  if flash.errors.email %}
+                    <li>{{ flash.errors.email }}</li>
+                {% endif %}
+                {%  if flash.errors.username %}
+                    <li>{{ flash.errors.username }}</li>
+                {% endif %}
+                {%  if flash.errors.password %}
+                    <li>{{ flash.errors.password }}</li>
+                {% endif %}
+                {%  if flash.errors.password_confirm %}
+                    <li>{{ flash.errors.password_confirm }}</li>
+                {% endif %}
+
+            </ul>
+        </div>
+    {% endif %}
+
+    <h1>VPNSox Register</h1>
+    <form method="post" action="{{ path_for('register') }}">
+        {{ csrf() }}
+        <input type="email" name="email" placeholder="Email" required="required" />
+        <input type="text" name="username" placeholder="Username" required="required" maxlength="15" />
+        <input type="password" name="password" placeholder="Password" required="required" />
+        <input type="password" name="password_confirm" placeholder="Confirm Password" required="required" />
+
+        <button type="submit" class="btn btn-primary btn-block btn-large">Create my Account.</button><br />
+        <a class="btn btn-warning btn-block btn-large" href="{{ path_for('login') }}" style="text-decoration: none;">I already have an account</a>
+    </form>
+
+{% endblock %}
