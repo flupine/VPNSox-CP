@@ -1,4 +1,4 @@
-<img src="https://imgur.com/a/6uYML" width="500" />
+<img src="https://i.imgur.com/XPcaiW5.jpg" width="200" />
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c03de63aedd540d0b1ea4266e27e8ba2)](https://www.codacy.com/app/faurest.lupine/VPNSox-CP?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=flupine/VPNSox-CP&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/214ae6d482e32f08a756/maintainability)](https://codeclimate.com/github/flupine/VPNSox-CP/maintainability)
