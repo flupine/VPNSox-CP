@@ -1,0 +1,127 @@
+
+{%  extends "layout.twig" %}
+
+{% block content %}
+
+
+      <div class="main-heading">
+        <div class="main-title">
+          <ol class="breadcrumb">
+            <li><a href="{{ path_for('root') }}">Home</a></li>
+            <li class="active">{{ account.username | capitalize }} Account</li>
+          </ol>
+        </div>
+      </div>
+     <div class="container-fluid half-padding">
+       {% if account.plan <= 0 %}
+           <div class="alert alert-info">To start using our services, choose an offer</div>
+       {% endif %}
+       {%  if flash.success %}
+        <div class="alert alert-success alert-dismissible">
+            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{ flash.success }}
+        </div>
+          {% endif %}
+          {%  if flash.error %}
+              <div class="alert alert-danger alert-dismissible">
+                  <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> {{ flash.error }}
+                  <ul>
+                      {%  if flash.errors.password_confirm %}
+                          <li>{{ flash.errors.password_confirm }}</li>
+                      {% endif %}
+                      {%  if flash.errors.current_password %}
+                          <li>{{ flash.errors.current_password }}</li>
+                      {% endif %}
+
+                  </ul>
+              </div>
+          {% endif %}
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="panel panel-info">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Change your password</h3>
+                </div>
+                <div class="panel-body">
+                   <form action="{{ path_for('changePwd') }}" method="post">
+                  <div class="form">
+                    {{ csrf() }}
+                    <div class="form-group">
+                      <label class="control-label">Current Password</label>
+                      <input class="form-control" type="password" name="current_password">
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label">New Password</label>
+                      <input class="form-control" type="password" name="password">
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label">Confirm Password</label>
+                      <input class="form-control" type="password" name="password_confirm">
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-info">Change Password</a>
+                  </form>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-4">
+              <div class="panel panel-warning">
+                <div class="panel-heading">
+                  <h3 class="panel-title">VPN options</h3>
+                </div>
+                <div class="panel-body">
+                 <div class="ov-widget">
+                    <div class="ov-widget__bar"><span>Used Bandwith</span>
+                      <div class="progress">
+                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="20" style="width: 1%;"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel-body">
+                 <form action="{{ path_for('changeVpnPwd') }}" method="post">
+                  <div class="form">
+                    {{ csrf() }}
+                    <div class="form-group">
+                      <label class="control-label">VPN Password</label>
+                      <input class="form-control" type="text" value="{{ account.vpn_pass }}" readonly="readonly">
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-warning">Generate new</a>
+                  </form>
+                </div>
+              </div>
+            </div>
+            
+           <div class="col-md-4">
+              <div class="panel panel-success">
+                <div class="panel-heading">
+                  <h3 class="panel-title">API Key</h3>
+                </div>
+                <div class="panel-body">
+                  <form action="{{ path_for('newApi') }}" method="post">
+                  <div class="form">
+                    {{ csrf() }}
+                    <div class="form-group">
+                      <label class="control-label">API Key</label>
+                      <input class="form-control" type="text" value="{{ account.api_key }}" readonly="readonly">
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label">API Secret</label>
+                      <input class="form-control" type="text" value="{{ account.api_secret }}" readonly="readonly">
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-success">Generate new keys</a>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+        
+ </div>
+</div>
+       
+
+{% endblock %}

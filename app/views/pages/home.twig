@@ -3,157 +3,160 @@
 
 {% block content %}
 
-
-
-<button class="menu-btn btn btn-bordered text-gray-alt text-bold top-left-corner">&#9776; MENU</button>
-
-
-<div class="row">
-    <div class="col-sm-3 text-center">
-        <div class="p-10 brad">
-            <a href="#" class="center-on-hover">
-                <img src="placeholders/avatars/avatar.jpg" alt="" class="img-circle" width="115">
-            </a>
-
-            <div >
-                <div>
-                    <div class="i-block" >
-                        <h3 class="m-b-0">{{ account.username }}</h3>
-                    </div>
-                </div>
-                <div>
-                    <div class="text-gray-alt i-block" >
-                        <span class="m-t-10 d-block">{{ account.email }}</span>
-                    </div>
-                </div>
-            </div>
+      <div class="main-heading">
+        <div class="main-title">
+          <ol class="breadcrumb">
+            <li><a href="{{ path_for('root') }}">Home</a></li>
+            <li class="active">Dashboard</li>
+          </ol>
         </div>
-    </div>
-    <div class="col-sm-9">
-        <div class="bg-white p-30 brad b-bot-2px-gray-light b-right-1px-gray-light">
-            <div class="row">
-                <div class="col-sm-5 text-center">
-                    <div class="circle-50-icon bg-green-dark m-t-10">
-                        <div class="iconmelon icon-white" style="color: #FFFFFF;">
-                            <i class="fa fa-usd fa-2x"></i>
-                        </div>
-                    </div>
-                    <div class="text-large text-gray-alt">{{ account.credits }}</div>
-                    <form action="https://www.coinpayments.net/index.php" method="post">
-                        <input type="hidden" name="cmd" value="_pay">
-                        <input type="hidden" name="reset" value="1">
-                        <input type="hidden" name="merchant" value="6a96f3f0a0f55f93ebbd12f7a6b77bbd">
-                        <input type="hidden" name="item_name" value="VPNSox Credits">
-                        <input type="hidden" name="currency" value="EUR">
-                        <input type="hidden" name="amountf" value="3.00000000">
-                        <input type="hidden" name="quantity" value="1">
-                        <input type="hidden" name="allow_quantity" value="0">
-                        <input type="hidden" name="want_shipping" value="0">
-                        <input type="hidden" name="success_url" value="https://panel.vpnsox.org/success">
-                        <input type="hidden" name="cancel_url" value="https://panel.vpnsox.org/cancel">
-                        <input type="hidden" name="ipn_url" value="https://panel.vpnsox.org/ipn">
-                        <input type="hidden" name="allow_extra" value="0">
-                        <button type="submit" class="btn btn-primary btn-lg m-t-10">Buy Credits (3€ = 3 Credit)</button>
-
-                    </form>
-                </div>
-                <div class="col-sm-7">
-                    <h4>Registeration Date</h4>
-                    <p class="text-gray-alt">{{ account.confirmed_at | date('m-d-Y') }}</p>
-                    <hr>
-                    <h4 class="">Plan Expiration</h4>
-                    <p class="text-gray-alt">{% if account.plan == 0 %}Choose a plan{% else %}{{ account.plan_date | date('m-d-Y') }}{% endif %}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div  class="bg-white p-30 m-t-10 brad b-bot-2px-gray-light b-right-1px-gray-light">
-    <h2 class="text-center p-b-30 m-t-0 page-header">Plans</h2>
-    {% if account.plan <= 0 %}
+      </div>
+     <div class="container-fluid half-padding">
+       {% if account.plan <= 0 %}
         <div class="alert alert-info">To start using our services, choose an offer</div>
-    {% endif %}
-    {%  if flash.success %}
-        <div class="alert alert-success">
-            {{ flash.success }}
-        </div>
-    {% endif %}
-    {%  if flash.error %}
-        <div class="alert alert-danger">
-            {{ flash.error }}
-        </div>
-    {% endif %}
-    <!-- TABLE -->
-    <div class="col-sm-6">
-        <div class="pricing-table">
-
-            <div class="bg-gray-dark table-top-wrapper">
-                <div class="table-top bg-green-dark">
-                    <div class="iconmelon " style="color: #FFFFFF;">
-                        <i class="fa fa-usd fa-2x"></i>
-
+        {% endif %}
+        {%  if flash.success %}
+            <div class="alert alert-success">
+                {{ flash.success }}
+            </div>
+        {% endif %}
+        {%  if flash.error %}
+            <div class="alert alert-danger">
+                {{ flash.error }}
+            </div>
+        {% endif %}
+          <div class="row">
+            <div class="col-md-9">
+              <div class="panel panel-info">
+                <div class="panel-heading">
+                  <h3 class="panel-title">VPNSox News</h3>
+                </div>
+                <div class="panel-body">
+                  <ul class="nav nav-tabs" role="tablist">
+                    {% for item in news %}
+                    <li {% if loop.first %} class="active" {% endif %} role="presentation"><a href="#news{{ item.id }}" aria-controls="#news{{ item.id }}" role="tab" data-toggle="tab">News #{{ item.id }}</a></li>
+                    {% endfor %}
+                  </ul>
+                  <div class="tab-content">
+                    {% for item in news %}
+                    <div class="tab-pane {% if loop.first %} active {% endif %}" id="news{{ item.id }}" role="tabpanel">
+                      <h3>
+                        {{ item.title }}
+                      </h3>
+                      <p>{{ item.content | nl2br }}</p>
+                      <small><br />
+                        {{ item.date | date('d-m-Y') }} - {{ item.author }}
+                      </small>
                     </div>
+                    {% endfor %}
+                  </div>
                 </div>
+              </div>
             </div>
-
-            <div class="bg-white p-30">
-
-                <div class="text-large text-center">Free</div>
-
-                <div class="table-body">
-                    <ul class="checkmarked m-t-10">
-                        <li>1 Country</li>
-                        <li>Unlimited Access</li>
-                        <li>Unlimited Bandwidth</li>
-                        <li>24/7 Support</li>
-                    </ul>
-                </div>
-                <hr class="m-t-0 m-b-10">
-                <div class="text-center text-large m-b-10">Free /Month</div>
-                <a href="{{ path_for('order', { 'plan': '1' }) }}" class="btn btn-primary btn-block btn-lg">Purchase</a>
-
-
-            </div>
-
-        </div>
-    </div>
-
-    <!-- TABLE -->
-    <div class="col-sm-6">
-        <div class="pricing-table">
-
-            <div class="bg-gray-dark table-top-wrapper">
-                <div class="table-top bg-orange">
-                    <div class="iconmelon" style="color: #FFFFFF;">
-                        <i class="fa fa-diamond fa-2x"></i>
-
+         
+            <div class="datalist page page_users users float-right">
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <div class="users-preview datalist-preview">
+                <div class="users-preview__cont">
+                  <div class="users-preview__name" title="{{ account.username }}">{{ account.username }}</div>
+                  <div class="users-preview__data">
+                    <div class="users-preview__photo">
+                      <div></div>
                     </div>
+                  </div>
+                  <div class="users-preview__props">
+                    <div class="users-preview__prop" title="Contact"><i class="fa fa-envelope"></i><span class="users-preview__contact">{{ account.email }}</span></div>
+                    <div class="users-preview__prop"><i class="fa fa-calendar"></i><span class="users-preview__date">{{ account.confirmed_at | date('d-m-Y') }}</span></div>
+                    <div class="users-preview__prop"><i class="fa fa-bitcoin"></i><span class="users-preview__status">{{ account.credits }}</span></div>
+                    {% if ip == "vpnsoxscfaxtotrz.onion" %}
+                        <form action="https://coinpaymtstgtibr.onion/index.php" method="post">
+                    {% else %}
+                        <form action="https://www.coinpayments.net/index.php" method="post">
+                    {% endif %}
+                            <input type="hidden" name="cmd" value="_pay">
+                            <input type="hidden" name="reset" value="1">
+                            <input type="hidden" name="merchant" value="04f4b9c69ad87a3d78ae53497a65beca">
+                            <input type="hidden" name="item_name" value="VPNSox Credits 3€ = 3 Tokens">
+                            <input type="hidden" name="currency" value="EUR">
+                            <input type="hidden" name="amountf" value="3.00000000">
+                            <input type="hidden" name="quantity" value="1">
+                            <input type="hidden" name="allow_quantity" value="0">
+                            <input type="hidden" name="want_shipping" value="0">
+                            {% if ip == "vpnsoxscfaxtotrz.onion" %}
+                            <input type="hidden" name="success_url" value="http://vpnsoxscfaxtotrz.onion/success">
+                            <input type="hidden" name="cancel_url" value="http://vpnsoxscfaxtotrz.onion/cancel">
+                            <input type="hidden" name="ipn_url" value="http://vpnsoxscfaxtotrz.onion/ipn">                          
+                            {% else %}
+                            <input type="hidden" name="success_url" value="https://panel.vpnsox.org/success">
+                            <input type="hidden" name="cancel_url" value="https://panel.vpnsox.org/cancel">
+                            <input type="hidden" name="ipn_url" value="https://panel.vpnsox.org/ipn">
+                            {% endif %}
+                            <input type="hidden" name="allow_extra" value="0"></br>
+                            <button type="submit" class="btn btn-info">Buy Tokens</button>
+                        </form>
+                  </div>
                 </div>
+              </div>
             </div>
-
-            <div class="bg-white p-30">
-                <div class="text-large text-center">Gold</div>
-                <div class="table-body">
-                    <ul class="checkmarked m-t-10">
-                        <li>All Country</li>
-                        <li>Unlimited Access</li>
-                        <li>Unlimited Bandwidth</li>
-                        <li>24/7 Support</li>
-                    </ul>
+           </div>
+            <div class="col-md-9">
+              <div class="panel panel-danger">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Select an offer</h3>
                 </div>
-                <hr class="m-t-0 m-b-10">
-                <div class="text-center text-large m-b-10">3 Credits /Month</div>
-                <a href="{{ path_for('order', { 'plan': '2' }) }}" class="btn btn-primary btn-block btn-lg">Purchase</a>
+                <div class="panel-body">
+                  <!-- item -->
+                      <div class="col-md-6 text-center left">
+                          <div class="panel panel-danger panel-pricing">
+                              <div class="panel-heading">
+                                  <i class="fa fa-desktop"></i>
+                                  <h3>Free</h3>
+                              </div>
+                              <div class="panel-body text-center">
+                                  <p><strong>0 Tokens / Month</strong></p>
+                              </div>
+                              <ul class="list-group text-center">
+                                      <li class="list-group-item">1 Server</li>
+                                      <li class="list-group-item">20GB/month Bandwidth</li>
+                                      <li class="list-group-item">No-Logs</li>
+                                      <li class="list-group-item">Shared Connectivity</li>
+                                      <li class="list-group-item">DDoS Protected</li>
+                                      <li class="list-group-item">27/7 support</li>
+                              <div class="panel-footer">
+                                  <a class="btn btn-lg btn-block btn-danger" href="{{ path_for('order', { 'plan': '1' }) }}" {% if account.plan >= 2 %} disabled="" {% endif %} >BUY NOW!</a>
+                              </div>
+                          </div>
+                      </div> 
+                      <!-- /item -->
+
+                      <!-- item -->
+                      <div class="col-md-6 text-center">
+                          <div class="panel panel-warning panel-pricing">
+                              <div class="panel-heading">
+                                  <i class="fa fa-desktop"></i>
+                                  <h3>Premium</h3>
+                              </div>
+                              <div class="panel-body text-center">
+                                  <p><strong>3 Tokens / Month</strong></p>
+                              </div>
+                              <ul class="list-group text-center">
+                                  <li class="list-group-item"> All Servers</li>
+                                  <li class="list-group-item"> Unlimited Bandwidth</li>
+                                  <li class="list-group-item">No-Logs</li>
+                                  <li class="list-group-item"> 1Gbps Connectivity</li>
+                                  <li class="list-group-item"> DDoS Protected</li>
+                                  <li class="list-group-item"> 27/7 support</li>
+                              </ul>
+                              <div class="panel-footer">
+                                  <a class="btn btn-lg btn-block btn-warning" href="{{ path_for('order', { 'plan': '2' }) }}">BUY NOW!</a>
+                              </div>
+                          </div>
+                      </div>
+                      <!-- /item -->
+                </div>
+              </div>
             </div>
-
-        </div>
-    </div>
-
-    &nbsp;
-
-
-
-</div>
-
+          </div>
+        </div>  
+       
 {% endblock %}

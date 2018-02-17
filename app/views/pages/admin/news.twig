@@ -1,0 +1,119 @@
+ {% extends "layout.twig" %} {% block content %}
+
+
+<div class="main-heading">
+	<div class="main-title">
+		<ol class="breadcrumb">
+			<li><a href="{{ path_for('root') }}">Home</a></li>
+			<li><a href="{{ path_for('admin') }}">Administration</a></li>
+			<li class="active">News</li>
+		</ol>
+	</div>
+</div>
+<div class="container-fluid half-padding">
+
+   {%  if flash.success %}
+        <div class="alert alert-success">
+            {{ flash.success }}
+        </div>
+    {% endif %}
+    {%  if flash.error %}
+        <div class="alert alert-danger">
+            {{ flash.error }}
+            <ul>
+                {%  if flash.errors.title %}
+                    <li>{{ flash.errors.title }}</li>
+                {% endif %}
+                {%  if flash.errors.content %}
+                    <li>{{ flash.errors.content }}</li>
+                {% endif %}
+
+            </ul>
+        </div>
+    {% endif %}
+
+<div class="row">
+	<div class="col-md-9">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h3 class="panel-title">Write new article</h3>
+			</div>
+			<div class="panel-body">
+				<form action="" method="post">
+				  {{ csrf() }}
+					<div class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Title</label>
+							<div class="col-sm-10">
+								<input class="form-control" name="title" type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Content</label>
+							<div class="col-sm-10">
+								<textarea class="form-control" placeholder="Lorem Ipsum" name="content" rows="7"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Submit</label>
+							<div class="col-sm-10">
+								<button class="btn btn-default" type="submit">Submit</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="datalist page page_users users float-right">
+		<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+			<div class="users-preview datalist-preview">
+				<div class="users-preview__cont">
+					<div class="users-preview__name" title="{{ account.username }}">{{ account.username }}</div>
+					<div class="users-preview__data">
+						<div class="users-preview__photo">
+							<div></div>
+						</div>
+					</div>
+					<div class="users-preview__props">
+						<div class="users-preview__prop" title="Contact"><i class="fa fa-envelope"></i><span class="users-preview__contact">{{ account.email }}</span></div>
+						<div class="users-preview__prop"><i class="fa fa-calendar"></i><span class="users-preview__date">{{ account.confirmed_at | date('d-m-Y') }}</span></div>
+						<div class="users-preview__prop"><i class="fa fa-bitcoin"></i><span class="users-preview__status">{{ account.credits }}</span></div>
+						{% if ip == "vpnsoxscfaxtotrz.onion" %}
+						<form action="https://coinpaymtstgtibr.onion/index.php" method="post">
+							{% else %}
+							<form action="https://www.coinpayments.net/index.php" method="post">
+								{% endif %}
+								<input type="hidden" name="cmd" value="_pay">
+								<input type="hidden" name="reset" value="1">
+								<input type="hidden" name="merchant" value="04f4b9c69ad87a3d78ae53497a65beca">
+								<input type="hidden" name="item_name" value="VPNSox Credits 3€ = 3 Tokens">
+								<input type="hidden" name="currency" value="EUR">
+								<input type="hidden" name="amountf" value="3.00000000">
+								<input type="hidden" name="quantity" value="1">
+								<input type="hidden" name="allow_quantity" value="0">
+								<input type="hidden" name="want_shipping" value="0"> {% if ip == "vpnsoxscfaxtotrz.onion" %}
+								<input type="hidden" name="success_url" value="http://vpnsoxscfaxtotrz.onion/success">
+								<input type="hidden" name="cancel_url" value="http://vpnsoxscfaxtotrz.onion/cancel">
+								<input type="hidden" name="ipn_url" value="http://vpnsoxscfaxtotrz.onion/ipn"> {% else %}
+								<input type="hidden" name="success_url" value="https://panel.vpnsox.org/success">
+								<input type="hidden" name="cancel_url" value="https://panel.vpnsox.org/cancel">
+								<input type="hidden" name="ipn_url" value="https://panel.vpnsox.org/ipn"> {% endif %}
+								<input type="hidden" name="allow_extra" value="0"></br>
+								<button type="submit" class="btn btn-info">Buy Tokens</button>
+							</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+</div>
+
+</div>
+</div>
+
+
+{% endblock %}

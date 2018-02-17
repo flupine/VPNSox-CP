@@ -1,5 +1,10 @@
 <?php
 use App\Controllers\PagesController;
+use App\Controllers\LoginController;
+use App\Controllers\RegisterController;
+use App\Controllers\AccountController;
+use App\Controllers\NewsController;
+
 require '../vendor/autoload.php';
 session_start();
 
@@ -20,30 +25,58 @@ $app->add(new \App\Middlewares\TwigCsrfMiddleware($container->view->getEnvironme
 $app->add($container->csrf);
 
 //ROUTES
-$app->get('/', PagesController::class . ':home')->setName('root');
-$app->get('/admin', PagesController::class . ':admin')->setName('admin');
-$app->get('/admin/logs/{user}', PagesController::class . ':adminLogs')->setName('adminLogs');
-$app->get('/admin/logs/{user}/delete', PagesController::class . ':adminLogsDelete');
-$app->get('/tos', PagesController::class . ':tos')->setName('tos');
-$app->get('/cancel', PagesController::class . ':cancel')->setName('cancel');
-$app->get('/success', PagesController::class . ':cancel')->setName('success');
-$app->get('/order/{plan}', PagesController::class . ':plan')->setName('order');;
-$app->get('/register', PagesController::class . ':register')->setName('register');
-$app->get('/login/{id}/{token}', PagesController::class . ':confirm');
-$app->get('/login', PagesController::class . ':login')->setName('login');
-$app->get('/logout', PagesController::class . ':logout')->setName('logout');
-$app->get('/payments', PagesController::class . ':invoices')->setName('payments');
-$app->get('/logs', PagesController::class . ':logs')->setName('logs');
-$app->get('/config', PagesController::class . ':config')->setName('config');
-$app->get('/download/{id}', PagesController::class . ':download')->setName('download');
+  //LOGIN 
+  $app->get('/login', LoginController::class . ':login')->setName('login');
+  $app->get('/login/{id}/{token}', LoginController::class . ':confirm');
+  $app->get('/logout', LoginController::class . ':logout')->setName('logout');
+  $app->post('/login', LoginController::class . ':postLogin');
 
-//$app->get('/referral/{id}', PagesController::class . ':referral');
+  //REGISTER
+  $app->get('/register', RegisterController::class . ':register')->setName('register');
+  $app->post('/register', RegisterController::class . ':postRegister');
+
+  //ACCOUNT
+  $app->get('/account', AccountController::class . ':account')->setName('account');
+  $app->post('/account/newapi', AccountController::class . ':newApi')->setName('newApi');
+  $app->post('/account/changepwd', AccountController::class . ':changePassword')->setName('changePwd');
+  $app->post('/account/changevpnpwd', AccountController::class . ':changeVpnPassword')->setName('changeVpnPwd');
 
 
+  //PAYMENT
+  $app->get('/payments', PagesController::class . ':invoices')->setName('payments');
+  $app->get('/cancel', PagesController::class . ':cancel')->setName('cancel');
+  $app->get('/success', PagesController::class . ':cancel')->setName('success');
+  $app->get('/order/{plan}', PagesController::class . ':plan')->setName('order');
+  $app->post('/ipn', PagesController::class . ':ipn');
 
-$app->post('/register', PagesController::class . ':postRegister');
-$app->post('/login', PagesController::class . ':postLogin');
-$app->post('/ipn', PagesController::class . ':ipn');
+  //NEWS
+  $app->get('/admin/news', NewsController::class . ':news')->setName('news');
+  $app->post('/admin/news', NewsController::class . ':addNews');
+  
+  //ADMIN
+  $app->get('/admin', PagesController::class . ':admin')->setName('admin');
+  $app->get('/admin/logs/{user}/{page}', PagesController::class . ':adminLogs')->setName('adminLogs');
+  $app->get('/admin/purge/{user}', PagesController::class . ':adminLogsPurge')->setName('adminLogsPurge');
+  $app->post('/admin/search', PagesController::class . ':adminSearch')->setName('adminSearch');
+
+  //API
+  //$app->get('/api/{api_key}/{api_secret}/infos', ApiController::class . 'infos');
+
+  //OTHERS
+  $app->get('/', PagesController::class . ':home')->setName('root');
+
+
+  $app->get('/tos', PagesController::class . ':tos')->setName('tos');
+
+
+  $app->get('/logs', PagesController::class . ':logs')->setName('logs');
+  $app->get('/config', PagesController::class . ':config')->setName('config');
+  $app->get('/download/{id}', PagesController::class . ':download')->setName('download');
+
+  //$app->get('/referral/{id}', PagesController::class . ':referral');
+
+
+
 
 //EXECUTION
 $app->run();

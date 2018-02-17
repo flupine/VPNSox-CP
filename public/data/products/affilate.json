@@ -1,0 +1,20 @@
+{
+  "data": [
+    ["54256918", "<i class='products__cover fa fa-picture-o'></i>", "Naproxen", "5/27/2015", "$1354.43", "Inactive", "<div class='products__stat'>9, 2, 8, 1, 9, 0, 4, 2, 4, 0</div>", "Affilate"],
+    ["43833375", "<i class='products__cover fa fa-picture-o'></i>", "equaline antacid", "5/24/2015", "$167.16", "Active", "<div class='products__stat'>9, 5, 2, 8, 3, 1, 7, 1, 1, 8</div>", "Affilate"],
+    ["73544289", "<i class='products__cover fa fa-picture-o'></i>", "Tears lubricant", "5/27/2015", "$1148.26", "Inactive", "<div class='products__stat'>6, 6, 3, 2, 7, 6, 9, 6, 6, 4</div>", "Affilate"],
+    ["42148400", "<i class='products__cover fa fa-picture-o'></i>", "SALICYLIC ACID", "7/6/2015", "$1612.41", "Active", "<div class='products__stat'>2, 9, 3, 9, 1, 6, 3, 8, 1, 9</div>", "Affilate"],
+    ["60418329", "<i class='products__cover fa fa-picture-o'></i>", "Degree Women", "10/18/2015", "$877.05", "Active", "<div class='products__stat'>5, 7, 6, 2, 2, 8, 0, 1, 5, 7</div>", "Affilate"],
+    ["59985297", "<i class='products__cover fa fa-picture-o'></i>", "Carbamazepine", "6/10/2015", "$1054.81", "Inactive", "<div class='products__stat'>8, 1, 6, 5, 1, 2, 2, 9, 1, 1</div>", "Affilate"],
+    ["31112947", "<i class='products__cover fa fa-picture-o'></i>", "Divalproex Sodium", "1/31/2015", "$486.73", "Inactive", "<div class='products__stat'>2, 8, 8, 9, 7, 7, 5, 5, 9, 9</div>", "Affilate"],
+    ["69991990", "<i class='products__cover fa fa-picture-o'></i>", "Morphine Sulfate", "7/12/2015", "$560.20", "Inactive", "<div class='products__stat'>2, 6, 2, 0, 8, 0, 0, 1, 1, 7</div>", "Affilate"],
+    ["85712047", "<i class='products__cover fa fa-picture-o'></i>", "Amoxicillin", "11/19/2015", "$797.44", "Inactive", "<div class='products__stat'>8, 7, 3, 8, 1, 9, 0, 3, 5, 9</div>", "Affilate"],
+    ["49681880", "<i class='products__cover fa fa-picture-o'></i>", "Camptosar", "12/18/2015", "$1779.34", "Inactive", "<div class='products__stat'>7, 4, 7, 9, 8, 2, 0, 0, 8, 1</div>", "Affilate"],
+    ["46641999", "<i class='products__cover fa fa-picture-o'></i>", "Privet", "9/2/2015", "$250.66", "Inactive", "<div class='products__stat'>1, 9, 8, 7, 6, 4, 8, 5, 5, 4</div>", "Affilate"],
+    ["19767598", "<i class='products__cover fa fa-picture-o'></i>", "Tamiflu", "5/28/2015", "$621.54", "Inactive", "<div class='products__stat'>9, 3, 1, 6, 5, 5, 4, 2, 3, 3</div>", "Affilate"],
+    ["44922568", "<i class='products__cover fa fa-picture-o'></i>", "Cefoxitin", "11/3/2015", "$178.89", "Active", "<div class='products__stat'>0, 6, 4, 2, 6, 3, 8, 0, 2, 8</div>", "Affilate"],
+    ["93750692", "<i class='products__cover fa fa-picture-o'></i>", "HYCAMTIN", "8/28/2015", "$1518.12", "Active", "<div class='products__stat'>5, 3, 8, 5, 2, 8, 4, 3, 0, 7</div>", "Affilate"],
+    ["13811646", "<i class='products__cover fa fa-picture-o'></i>", "ibuprofen", "7/8/2015", "$1309.94", "Inactive", "<div class='products__stat'>1, 3, 6, 9, 8, 4, 5, 9, 6, 0</div>", "Affilate"],
+    ["54329543", "<i class='products__cover fa fa-picture-o'></i>", "Isopropyl alcohol", "7/28/2015", "$352.55", "Inactive", "<div class='products__stat'>5, 6, 3, 0, 0, 1, 3, 8, 1, 4</div>", "Affilate"]
+  ]
+}

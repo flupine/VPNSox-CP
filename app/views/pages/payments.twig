@@ -1,45 +1,107 @@
 {%  extends "layout.twig" %}
 
 {% block content %}
-<div  class="bg-white p-30 m-t-10 brad b-bot-2px-gray-light b-right-1px-gray-light">
-
-
-            {%  if flash.success %}
-                <div class="alert alert-success">
-                    {{ flash.success }}
+      <div class="main-heading">
+        <div class="main-title">
+          <ol class="breadcrumb">
+            <li><a href="{{ path_for('root') }}">Home</a></li>
+            <li class="active">Invoices</li>
+          </ol>
+        </div>
+      </div>
+     <div class="container-fluid half-padding">
+       {% if account.plan <= 0 %}
+        <div class="alert alert-info">To start using our services, choose an offer</div>
+        {% endif %}
+        {%  if flash.success %}
+            <div class="alert alert-success">
+                {{ flash.success }}
+            </div>
+        {% endif %}
+        {%  if flash.error %}
+            <div class="alert alert-danger">
+                {{ flash.error }}
+            </div>
+        {% endif %}
+          <div class="row">
+            <div class="col-md-9">
+              <div class="panel panel-warning">
+                <div class="panel-heading">
+                  <h3 class="panel-title">See your invoices</h3>
                 </div>
-            {% endif %}
-            {%  if flash.error %}
-                <div class="alert alert-danger">
-                    {{ flash.error }}
+                <div class="panel-body">
+                  <table id="" class="table table_sortable" cellspacing="0" width="100%">
+										<thead>
+												<tr>
+														<th>#</th>
+														<th>Name</th>
+														<th>Value</th>
+														<th>Date</th>
+												</tr>
+										</thead>
+										<tbody>
+												{% for item in invoices|sort %}
+												<tr>
+														<td>{{ item.id }}</td>
+														<td>{{ item.name }}</td>
+														<td>{{ item.plan_expiration | date('d-M-Y') }} - ({{ item.price }}€)</td>
+														<td>{{ item.date | date('M. d,Y,  H:i A')}}</td>
+												</tr>
+												{% endfor %}     
+											</tbody>
+									</table>
                 </div>
-            {% endif %}
+              </div>
+            </div>
+            <div class="datalist page page_users users float-right">
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <div class="users-preview datalist-preview">
+                <div class="users-preview__cont">
+                  <div class="users-preview__name" title="{{ account.username }}">{{ account.username }}</div>
+                  <div class="users-preview__data">
+                    <div class="users-preview__photo">
+                      <div></div>
+                    </div>
+                  </div>
+                  <div class="users-preview__props">
+                    <div class="users-preview__prop" title="Contact"><i class="fa fa-envelope"></i><span class="users-preview__contact">{{ account.email }}</span></div>
+                    <div class="users-preview__prop"><i class="fa fa-calendar"></i><span class="users-preview__date">{{ account.confirmed_at | date('d-m-Y') }}</span></div>
+                    <div class="users-preview__prop"><i class="fa fa-bitcoin"></i><span class="users-preview__status">{{ account.credits }}</span></div>
+                    {% if ip == "vpnsoxscfaxtotrz.onion" %}
+                        <form action="https://coinpaymtstgtibr.onion/index.php" method="post">
+                    {% else %}
+                        <form action="https://www.coinpayments.net/index.php" method="post">
+                    {% endif %}
+                            <input type="hidden" name="cmd" value="_pay">
+                            <input type="hidden" name="reset" value="1">
+                            <input type="hidden" name="merchant" value="04f4b9c69ad87a3d78ae53497a65beca">
+                            <input type="hidden" name="item_name" value="VPNSox Credits 3€ = 3 Tokens">
+                            <input type="hidden" name="currency" value="EUR">
+                            <input type="hidden" name="amountf" value="3.00000000">
+                            <input type="hidden" name="quantity" value="1">
+                            <input type="hidden" name="allow_quantity" value="0">
+                            <input type="hidden" name="want_shipping" value="0">
+                            {% if ip == "vpnsoxscfaxtotrz.onion" %}
+                            <input type="hidden" name="success_url" value="http://vpnsoxscfaxtotrz.onion/success">
+                            <input type="hidden" name="cancel_url" value="http://vpnsoxscfaxtotrz.onion/cancel">
+                            <input type="hidden" name="ipn_url" value="http://vpnsoxscfaxtotrz.onion/ipn">                          
+                            {% else %}
+                            <input type="hidden" name="success_url" value="https://panel.vpnsox.org/success">
+                            <input type="hidden" name="cancel_url" value="https://panel.vpnsox.org/cancel">
+                            <input type="hidden" name="ipn_url" value="https://panel.vpnsox.org/ipn">
+                            {% endif %}
+                            <input type="hidden" name="allow_extra" value="0"></br>
+                            <button type="submit" class="btn btn-info">Buy Tokens</button>
+                        </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+      </div>
+    </div>
+   </div>
 
-            <h2 class="text-center p-b-30 m-t-0 page-header">Your Payments</h2>
-
-            <table class="table table-striped table-hover ">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Value</th>
-                    <th>Date</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for item in invoices|sort %}
-                <tr>
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.plan_expiration | date('M-d-Y') }} - ({{ item.price }}€)</td>
-                    <td>{{ item.date | date('M. d,Y,  H:i A')}}</td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-</div>
-
-    <!-- /#page-wrapper -->
+            
 
 
 {% endblock %}

@@ -154,6 +154,16 @@ class Controller{
         $req = $this->db->prepare("SELECT * FROM users WHERE id = :userid");
         $req->execute($q);
         $result = $req->fetch();
+        if (empty($result)){return 84;}
+        return $result;
+    }
+  
+   public function user_infos_username($username){
+        $q = array('username' => $username);
+        $req = $this->db->prepare("SELECT * FROM users WHERE username = :username");
+        $req->execute($q);
+        $result = $req->fetch();
+        if (empty($result)){return 84;}
         return $result;
     }
 
@@ -236,7 +246,7 @@ class Controller{
 
     public function listServers($plan){
         $q = array('plan' => $plan);
-        $req = $this->db->prepare("SELECT * FROM servers WHERE plan = :plan ORDER BY id DESC");
+        $req = $this->db->prepare("SELECT * FROM servers WHERE plan <= :plan ORDER BY id DESC");
         $req->execute($q);
         $result = $req->fetchAll();
         return $result;
@@ -257,6 +267,12 @@ class Controller{
         $result = $req->fetchAll();
         return $result;
     }
+  
+    public function getNews(){
+        $req = $this->db->query("SELECT * FROM news ORDER BY id DESC LIMIT 5");
+        $result = $req->fetchAll();
+        return $result;
+    }
 
     public function latestInvoices(){
         $req = $this->db->query("SELECT * FROM invoices ORDER BY id DESC LIMIT 5");
@@ -272,11 +288,5 @@ class Controller{
         return $result;
     }
 
-
-    public function delLog($user){
-        $this->db->prepare("DELETE FROM logs WHERE log_user = ?")->execute([$user]);
-        $this->db->prepare("INSERT INTO logs SET log_date = NOW(), log_user = ?, log_action = 'LOGS CLEARED BY ADMIN'")->execute([$user]);
-        return true;
-    }
 
 }

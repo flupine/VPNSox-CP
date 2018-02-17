@@ -1,59 +1,33 @@
 
-{%  extends "admin.twig" %}
+{%  extends "layout.twig" %}
 
 {% block content %}
 
 
-
-<button class="menu-btn btn btn-bordered text-gray-alt text-bold top-left-corner">&#9776; MENU</button>
-
-
-    <div class="row">
-        <div class="col-sm-3 text-center">
-            <div class="p-10 brad">
-                <a href="#" class="center-on-hover">
-                    <img src="placeholders/avatars/avatar.jpg" alt="" class="img-circle" width="115">
-                </a>
-
-                <div >
-                    <div>
-                        <div class="i-block" >
-                            <h3 class="m-b-0">{{ account.username }}</h3>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="text-gray-alt i-block" >
-                            <span class="m-t-10 d-block">{{ account.email }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="main-heading">
+        <div class="main-title">
+          <ol class="breadcrumb">
+            <li><a href="{{ path_for('root') }}">Home</a></li>
+            <li class="active">Administration</li>
+          </ol>
         </div>
-        <div class="col-sm-9">
-            <div class="bg-white p-30 brad b-bot-2px-gray-light b-right-1px-gray-light">
-                <div class="row">
-                    <div class="col-sm-5 text-center">
-                        <div class="circle-50-icon bg-green-dark m-t-10">
-                            <div class="iconmelon icon-white" style="color: #FFFFFF;">
-                                <i class="fa fa-usd fa-2x"></i>
-                            </div>
-                        </div>
-                        <div class="text-large text-gray-alt">{{ account.credits }}</div>
-                    </div>
-                    <div class="col-sm-7">
-                        <h4>Registeration Date</h4>
-                        <p class="text-gray-alt">{{ account.confirmed_at | date('m-d-Y') }}</p>
-                        <hr>
-                        <h4 class="">Plan Expiration</h4>
-                        <p class="text-gray-alt">{% if account.plan == 0 %}Choose a plan{% else %}{{ account.plan_date | date('m-d-Y') }}{% endif %}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div  class="bg-white p-30 m-t-10 brad b-bot-2px-gray-light b-right-1px-gray-light">
-        <h2 class="text-center p-b-30 m-t-0 page-header">Latest Actions</h2>
+         <div class="main-filter">
+            <form class="main-filter__search" action="{{ path_for('adminSearch') }}" method="post" >
+              <div class="input-group">
+                {{ csrf() }}
+                <input class="form-control" type="text" placeholder="Search User..." name="user"><span class="input-group-btn">
+                  <button class="btn btn-default" type="button">
+                    <div class="fa fa-search"></div>
+                  </button></span>
+              </div>
+            </form>
+         </div>
+      </div>
+      
+     <div class="container-fluid half-padding">
+       {% if account.plan <= 0 %}
+        <div class="alert alert-info">To start using our services, choose an offer</div>
+        {% endif %}
         {%  if flash.success %}
             <div class="alert alert-success">
                 {{ flash.success }}
@@ -64,53 +38,119 @@
                 {{ flash.error }}
             </div>
         {% endif %}
+          <div class="row">
+            <div class="col-md-9">
+              <div class="panel panel-info">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Latest user actions</h3>
+                </div>
+                <div class="panel-body">
+                  <table id="" class="table table_sortable" cellspacing="0" width="100%">
+										<thead>
+												<tr>
+														<th>#</th>
+														<th>Date</th>
+														<th>User</th>
+														<th>Action</th>
+												</tr>
+										</thead>
+										<tbody>
+												 {% for item in logs %}
+                              <tr>
+                                  <td>{{ item.id }}</td>
+                                  <td>{{ item.log_date| date('d-m-Y H:i:s') }}</td>
+                                  <td><a href="{{ path_for('adminLogs', {'user': item.log_user, 'page': '0'}) }}">{{ item.log_user }}</a></td>
+                                  <td>{{ item.log_action }}</td>
+                              </tr>
+                          {% endfor %}
+											</tbody>
+									</table>
+                </div>
+              </div>
+            </div>
+            
+            <div class="datalist page page_users users float-right">
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <div class="users-preview datalist-preview">
+                <div class="users-preview__cont">
+                  <div class="users-preview__name" title="{{ account.username }}">{{ account.username }}</div>
+                  <div class="users-preview__data">
+                    <div class="users-preview__photo">
+                      <div></div>
+                    </div>
+                  </div>
+                  <div class="users-preview__props">
+                    <div class="users-preview__prop" title="Contact"><i class="fa fa-envelope"></i><span class="users-preview__contact">{{ account.email }}</span></div>
+                    <div class="users-preview__prop"><i class="fa fa-calendar"></i><span class="users-preview__date">{{ account.confirmed_at | date('d-m-Y') }}</span></div>
+                    <div class="users-preview__prop"><i class="fa fa-bitcoin"></i><span class="users-preview__status">{{ account.credits }}</span></div>
+                    {% if ip == "vpnsoxscfaxtotrz.onion" %}
+                        <form action="https://coinpaymtstgtibr.onion/index.php" method="post">
+                    {% else %}
+                        <form action="https://www.coinpayments.net/index.php" method="post">
+                    {% endif %}
+                            <input type="hidden" name="cmd" value="_pay">
+                            <input type="hidden" name="reset" value="1">
+                            <input type="hidden" name="merchant" value="04f4b9c69ad87a3d78ae53497a65beca">
+                            <input type="hidden" name="item_name" value="VPNSox Credits 3€ = 3 Tokens">
+                            <input type="hidden" name="currency" value="EUR">
+                            <input type="hidden" name="amountf" value="3.00000000">
+                            <input type="hidden" name="quantity" value="1">
+                            <input type="hidden" name="allow_quantity" value="0">
+                            <input type="hidden" name="want_shipping" value="0">
+                            {% if ip == "vpnsoxscfaxtotrz.onion" %}
+                            <input type="hidden" name="success_url" value="http://vpnsoxscfaxtotrz.onion/success">
+                            <input type="hidden" name="cancel_url" value="http://vpnsoxscfaxtotrz.onion/cancel">
+                            <input type="hidden" name="ipn_url" value="http://vpnsoxscfaxtotrz.onion/ipn">                          
+                            {% else %}
+                            <input type="hidden" name="success_url" value="https://panel.vpnsox.org/success">
+                            <input type="hidden" name="cancel_url" value="https://panel.vpnsox.org/cancel">
+                            <input type="hidden" name="ipn_url" value="https://panel.vpnsox.org/ipn">
+                            {% endif %}
+                            <input type="hidden" name="allow_extra" value="0"></br>
+                            <button type="submit" class="btn btn-info">Buy Tokens</button>
+                        </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+      </div>
+            <div class="col-md-9">
+              <div class="panel panel-warning">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Latest invoices</h3>
+                </div>
+                <div class="panel-body">
+                  <table id="" class="table table_sortable" cellspacing="0" width="100%">
+										<thead>
+												<tr>
+														<th>#</th>
+														<th>Date</th>
+														<th>User</th>
+														<th>Price</th>
+                            <th>Plan Expiration</th>
+												</tr>
+										</thead>
+										<tbody>
+												 {% for item in invoices %}
+                            <tr>
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.date| date('d-m-Y') }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.price }}€</td>
+                                <td>{{ item.plan_expiration | date('d-m-Y') }}</td>
+                            </tr>
+                        {% endfor %}
 
-        <table class="table table-striped table-hover ">
-            <thead>
-            <tr>
-                <th>Date</th>
-                <th>User</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for item in logs %}
-                <tr>
-                    <td>{{ item.log_date| date('d-m-Y H:i:s') }}</td>
-                    <td><a href="logs/{{ item.log_user }}">{{ item.log_user }}</a></td>
-                    <td>{{ item.log_action }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        &nbsp;
+											</tbody>
+									</table>
+                </div>
+              </div>
+            </div>
+          </div>
     </div>
-
-
-    <div  class="bg-white p-30 m-t-10 brad b-bot-2px-gray-light b-right-1px-gray-light">
-        <h2 class="text-center p-b-30 m-t-0 page-header">Latest Invoices</h2>
-
-        <table class="table table-striped table-hover ">
-            <thead>
-            <tr>
-                <th>Date</th>
-                <th>User</th>
-                <th>Price</th>
-                <th>Plan Expiration</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for item in invoices %}
-                <tr>
-                    <td>{{ item.date| date('d-m-Y H:i:s') }}</td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.price }}€</td>
-                    <td>{{ item.plan_expiration }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        &nbsp;
-    </div>
+        
+ </div>
+</div>
+       
 
 {% endblock %}

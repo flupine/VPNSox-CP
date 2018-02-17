@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="{{ baseUrl }}/css/admin.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -16,7 +16,7 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
 
-    <script src="js/lib/modernizr.js"></script>
+    <script src="{{ baseUrl }}/js/lib/modernizr.js"></script>
 </head>
 <body class="bg-gray-light">
 
@@ -30,7 +30,7 @@
     <div id="top-nav">
         <div class="navbar-dropdown navbar-right navbar-avatar">
             <a href="#" data-target="#topavatar-toggle" class="hover-no-underline dropdown-toggle m-lr-30 mm-lr-10" data-toggle="dropdown">
-                <img src="placeholders/avatars/avatar.jpg" class="img-circle" width=25>
+                <img src="{{ baseUrl }}/placeholders/avatars/avatar.jpg" class="img-circle" width=25>
                 <span class="text-gray-light hidden-sm hidden-xs">{{ account.username }}</span>
                 <span class="caret text-white hidden-sm hidden-xs"></span>
             </a>
@@ -46,7 +46,7 @@
 <div class="sidebar bg-gray-dark text-white text-center pushy pushy-left">
     <header class="bg-g-ln-gray p-tb-30 pm-tb-10 p-lr-10 b-bot-2px-gray-dark hidden-xs">
         <a href="#" data-target="#avatar-toggle" class="hover-no-underline dropdown-toggle" data-toggle="dropdown">
-            <img src="placeholders/avatars/avatar.jpg" class="img-circle" width=35>
+            <img src="{{ baseUrl }}/placeholders/avatars/avatar.jpg" class="img-circle" width=35>
             <span class="text-gray-alt">Welcome</span>
             <span class="text-gray-light">{{ account.username }}</span>
             <span class="caret white"></span>
@@ -86,17 +86,17 @@
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://code.jquery.com/jquery.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/lib/bootstrap.js"></script>
+<script src="{{ baseUrl }}/js/lib/bootstrap.js"></script>
 
-<script src="js/lib/pushy.js"></script>
+<script src="{{ baseUrl }}/js/lib/pushy.js"></script>
 
-<script src="js/lib/icheck.js"></script>
+<script src="{{ baseUrl }}/js/lib/icheck.js"></script>
 
-<script src="js/lib/easypiechart.js"></script>
+<script src="{{ baseUrl }}/js/lib/easypiechart.js"></script>
 
-<script src="js/lib/bootstrap-select.js"></script>
+<script src="{{ baseUrl }}/js/lib/bootstrap-select.js"></script>
 
-<script src="js/admin.js"></script>
+<script src="{{ baseUrl }}/js/admin.js"></script>
 
 
 

@@ -42,12 +42,14 @@ $container['view'] = function ($container) {
  */
 $container['mailer'] = function ($container) {
     if ($container->debug){
-        $transport = Swift_SmtpTransport::newInstance('smtp.sendgrid.net', 587);
+        $transport = Swift_SmtpTransport::newInstance('in-v3.mailjet.com', 587);
     } else {
-        $transport = Swift_SmtpTransport::newInstance('smtp.sendgrid.net', 587);
+        $transport = Swift_SmtpTransport::newInstance('in-v3.mailjet.com', 587);
     }
-    $transport->setUsername('root');
-    $transport->setPassword('root');
+   // Your mailjet.com credentials
+    $transport->setUsername('Your usename');
+    $transport->setPassword('Your password');
+	$transport = new Swift_SendmailTransport('/usr/sbin/sendmail -bs');
     $mailer = Swift_Mailer::newInstance($transport);
     return $mailer;
 
@@ -57,15 +59,18 @@ $container['mailer'] = function ($container) {
  * @param $c
  * @return PDO
  */
+
+// Website SQL credentials
 $container['db'] = function ($c) {
-    $pdo = new PDO("mysql:host=localhost;dbname=vpnsox", 'root', 'root');
+    $pdo = new PDO("mysql:host=localhost;dbname=vpnsox", 'username', 'password');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     return $pdo;
 };
 
+//OpenVPN Database Credentials
 $container['db2'] = function ($c) {
-    $pdo = new PDO("mysql:host=localhost;dbname=openvpn", 'root', 'root');
+    $pdo = new PDO("mysql:host=localhost;dbname=openvpn", 'username', 'password');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     return $pdo;

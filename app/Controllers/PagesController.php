@@ -16,10 +16,10 @@ class PagesController extends Controller {
      */
     public function home(RequestInterface $request, ResponseInterface $response)
     {
-
         if($this->isOnline()){
             $user = $this->user_infos($_SESSION['auth']['id']);
-            return $this->render($response, 'pages/home.twig', ['account' => $user]);
+            $news = $this->getNews();
+            return $this->render($response, 'pages/home.twig', ['account' => $user, 'ip' => $_SERVER['SERVER_NAME'], 'news' => $news]);
         }else {
             return $this->redirect($response, 'login');
         }
@@ -27,40 +27,109 @@ class PagesController extends Controller {
 
     public function admin(RequestInterface $request, ResponseInterface $response)
     {
-
+        if (!$this->isOnline())
+        {
+            $this->flash("Not Allowed !", 'error');
+            return $this->redirect($response, 'login');
+        }
+        
+      
+        $user = $this->user_infos($_SESSION['auth']['id']);
         if($this->isAdmin()){
             $user = $this->user_infos($_SESSION['auth']['id']);
             $logs= $this->getLogs();
             $invoices = $this->latestInvoices();
             return $this->render($response, 'pages/admin/home.twig', ['account' => $user, 'logs' => $logs, 'invoices' => $invoices]);
         }else {
+            $this->addLog($user['username'], 'Tried to access admin articles area');
             $this->flash("Not Allowed !", 'error');
             return $this->redirect($response, 'root');
         }
     }
 
     public function adminLogs(RequestInterface $request, ResponseInterface $response, $args){
+        if (!$this->isOnline())
+        {
+            $this->flash("Not Allowed !", 'error');
+            return $this->redirect($response, 'login');
+        }
+        $user = $this->user_infos($_SESSION['auth']['id']);
+      
         if($this->isAdmin()){
-            $user = $this->user_infos($_SESSION['auth']['id']);
+            $client = $this->user_infos_username($args['user']);
+            if($user == 84 || $client == 84)
+            {
+              $this->flash("No user with this id or name !", 'error');
+              return $this->redirect($response, 'admin');
+            }
             $logs = $this->getUserLogs($args['user']);
-            return $this->render($response, 'pages/admin/logs.twig', ['account' => $user, 'logs' => $logs]);
+            $pages = intval($args['page']) . 0;
+            return $this->render($response, 'pages/admin/logs.twig', ['account' => $user, 'logs' => $logs, 'user' => $client, 'page' => $pages, 'current' => intval($args['page'])]);
         }else {
+            $this->addLog($user['username'], 'Tried to access admin logs area');
             $this->flash("Not Allowed !", 'error');
             return $this->redirect($response, 'root');
         }
 
 
     }
-
-    public function adminLogsDelete(RequestInterface $request, ResponseInterface $response, $args){
+  
+     public function adminLogsPurge(RequestInterface $request, ResponseInterface $response, $args){
+        if (!$this->isOnline())
+        {
+            $this->flash("Not Allowed !", 'error');
+            return $this->redirect($response, 'login');
+        }
+        $user = $this->user_infos($_SESSION['auth']['id']);
+      
         if($this->isAdmin()){
-            $this->delLog($args['user']);
-            $this->flash('Logs deleted for the user' . $args['user']);
-            return $this->redirect($response,  'admin');
-        }else{
+            $client = $this->user_infos_username($args['user']);
+            if($user == 84 || $client == 84)
+            {
+              $this->addLog($user['username'], ' Failed to find' . $client['username'] . 'logs');
+              $this->flash("No user with this id or name !", 'error');
+              return $this->redirect($response, 'admin');
+            }
+            $req = $this->db->prepare("DELETE FROM `logs` WHERE `log_user` = ?");
+            $req->execute([$client['username']]); 
+            $this->addLog($user['username'], 'Remove : ' . $client['username'] . ' logs');
+            $this->addLog($client['username'], 'Logs removed by : ' . $user['username']);
+            $this->flash("All logs removed !", 'success');
+            return $this->redirect($response, 'admin');
+        }else {
+            $this->addLog($user['username'], 'Tried to access admin logs area');
             $this->flash("Not Allowed !", 'error');
             return $this->redirect($response, 'root');
         }
+
+
+    }
+  
+    public function adminSearch(RequestInterface $request, ResponseInterface $response, $args){
+        if (!$this->isOnline())
+        {
+            $this->flash("Not Allowed !", 'error');
+            return $this->redirect($response, 'login');
+        }
+        $user = $this->user_infos($_SESSION['auth']['id']);
+      
+        if($this->isAdmin()){
+            $client = $this->user_infos_username($request->getParam('user'));
+            if($user == 84 || $client == 84)
+            {
+              $this->flash("No user with this id or name !", 'error');
+              $this->addLog($user['username'], 'User Search error');
+              return $this->redirect($response, 'admin');
+            }
+            $logs = $this->getUserLogs($request->getParam('user'));
+            return $this->render($response, 'pages/admin/logs.twig', ['account' => $user, 'logs' => $logs, 'user' => $client, 'page' => $pages, 'current' => 1]);
+        }else {
+            $this->addLog($user['username'], 'Tried to access admin logs area');
+            $this->flash("Not Allowed !", 'error');
+            return $this->redirect($response, 'root');
+        }
+
+
     }
 
     public function tos(RequestInterface $request, ResponseInterface $response)
@@ -117,47 +186,20 @@ class PagesController extends Controller {
         if($this->isOnline()){
             $user = $this->user_infos($_SESSION['auth']['id']);
             $invoices = $this->getInvoices($_SESSION['auth']['username']);
-            return $this->render($response, 'pages/payments.twig', ['account' => $user, 'invoices' => $invoices]);
+            return $this->render($response, 'pages/payments.twig', ['account' => $user, 'invoices' => $invoices, 'ip' => $_SERVER['SERVER_NAME']]);
         }else {
             return $this->redirect($response, 'login');
         }
     }
 
 
-    public function register(RequestInterface $request, ResponseInterface $response)
-    {
-
-        if($this->isOnline()){
-            return $this->redirect($response, 'root');
-        }else {
-            return $this->render($response, 'pages/register.twig');
-        }
-    }
-
-    public function logout(RequestInterface $request, ResponseInterface $response)
-    {
-        $this->addLog($_SESSION['auth']['username'], 'Logout');
-        unset($_SESSION['auth']);
-        $this->flash('You\'re now disconnected');
-        return $this->redirect($response, 'login');
-
-    }
-
-    public function login(RequestInterface $request, ResponseInterface $response)
-    {
-        if($this->isOnline()){
-            return $this->redirect($response, 'root');
-        }else {
-            return $this->render($response, 'pages/login.twig');
-        }
-    }
 
     public function config(RequestInterface $request, ResponseInterface $response)
     {
         if($this->isOnline()){
             $user = $this->user_infos($_SESSION['auth']['id']);
             $plan = $this->listServers($user['plan']);
-            return $this->render($response, 'pages/config.twig', ['account' => $user, 'servers' => $plan]);
+            return $this->render($response, 'pages/config.twig', ['account' => $user, 'servers' => $plan, 'ip' => $_SERVER['SERVER_NAME']]);
         }else {
             return $this->render($response, 'pages/login.twig');
         }
@@ -167,7 +209,7 @@ class PagesController extends Controller {
     {
         $user = $this->user_infos($_SESSION['auth']['id']);
         $valeurs = array('file' => $args['id'], 'plan' => $user['plan']);
-        $req = $this->db->prepare("SELECT * FROM servers WHERE(id = :file AND plan = :plan)");
+        $req = $this->db->prepare("SELECT * FROM servers WHERE(id = :file AND plan <= :plan)");
         $req->execute($valeurs);
         $result = $req->fetch();
 
@@ -177,10 +219,10 @@ class PagesController extends Controller {
             return $this->redirect($response, 'root');
         }else{
             $name = $result['name'];
-            $file = '../app/Uploads/' . $result['file'];
+            $file = '../app/Uploads/' . $name . '.zip';
             $response = $response->withHeader('Content-Description', 'File Transfer')
                 ->withHeader('Content-Type', 'application/zip')
-                ->withHeader('Content-Disposition', 'attachment;filename="'.$result['file'].'"')
+                ->withHeader('Content-Disposition', 'attachment;filename="'.$name.'.zip"')
                 ->withHeader('Expires', '0')
                 ->withHeader('Cache-Control', 'must-revalidate')
                 ->withHeader('Pragma', 'public')
@@ -194,13 +236,13 @@ class PagesController extends Controller {
     }
 
     public function ipn(RequestInterface $request, ResponseInterface $response){
-        if($this->isOnline()){
+        if(!$this->isOnline()){
             return $this->redirect($response, 'root');
         }
 
 
-        $cp_merchant_id = '6a96f3f0a0f55f93ebbd12f7a6b77bbd';
-        $cp_ipn_secret = 'yxhjL2gH';
+        $cp_merchant_id = '04f4b9c69ad87a3d78ae53497a65beca';
+        $cp_ipn_secret = 'Sj2P37wVwwg6T53B4H93KbUwc';
 
         //These would normally be loaded from your database, the most common way is to pass the Order ID through the 'custom' POST field.
         $order_currency = 'EUR';
@@ -234,11 +276,11 @@ class PagesController extends Controller {
         $txn_id = $request->getParam('txn_id');
         $item_name = $request->getParam('item_name');
         $item_number = $request->getParam('item_number');
-        $amount1 = floatval($request->getParam('amount1'));
-        $amount2 = floatval($request->getParam('amount2'));
+        $amount1 = $request->getParam('amount1');
+        $amount2 = $request->getParam('amount2');
         $currency1 = $request->getParam('currency1');
         $currency2 = $request->getParam('currency2');
-        $status = intval($request->getParam('status'));
+        $status = $request->getParam('status');
         $status_text = $request->getParam('status_text');
 
         //depending on the API of your system, you may want to check and see if the transaction ID $txn_id has already been handled before at this point
@@ -297,120 +339,6 @@ class PagesController extends Controller {
 
 
 
-    public function postLogin(RequestInterface $request, ResponseInterface $response)
-    {
-        $errors = [];
-        Validator::notEmpty()->validate($request->getParam('username') || $errors['name'] = 'Please enter a username');
-        Validator::notEmpty()->validate($request->getParam('password') || $errors['password'] = 'Please enter a password');
-
-        if(empty($errors)){
-            $req = $this->db->prepare('SELECT * FROM users WHERE (username = :username OR email = :username) AND confirmed_at IS NOT NULL');
-            $req->execute(['username' => $request->getParam('username')]);
-            $user = $req->fetch();
-
-            if($user == null){
-                $this->flash('Username or Password is invalid', 'error');
-                return $this->redirect($response, 'login');
-
-            }elseif(password_verify($request->getParam('password'), $user['password'])){
-                $this->addLog($request->getParam('username'), 'Login Success');
-                $this->flash('You\' re now Connected');
-                $_SESSION['auth'] = $user;
-                return $this->redirect($response, 'root');
-            }else{
-                $this->addLog($request->getParam('username'), 'Login Error');
-                $this->flash('Username or Password is invalid', 'error');
-                return $this->redirect($response, 'login');
-
-            }
-
-
-        }else{
-            $this->flash('Oups, check your form:', 'error');
-            $this->flash($errors, 'errors');
-            return $this->redirect($response, 'login');
-        }
-
-        return $this->redirect($response, 'login');
-
-
-    }
-
-    public function confirm(RequestInterface $request, ResponseInterface $response, $args)
-    {
-        $errors = [];
-        Validator::notEmpty()->validate($args['id'] || $errors['id'] = 'ID is empty');
-        Validator::notEmpty()->validate($args['token'] || $errors['token'] = 'token is empty');
-
-        if(empty($errors)) {
-
-            $user_id = $args['id'];
-            $token = $args['token'];
-            $req = $this->db->prepare('SELECT * FROM users WHERE id = ?');
-            $req->execute([$user_id]);
-            $user = $req->fetch();
-
-            if($user && $user['confirmation_token'] == $token ){
-                $this->db->prepare('UPDATE users SET confirmation_token = NULL, confirmed_at = NOW() WHERE id = ?')->execute([$user_id]);
-                $this->addLog($user['username'], 'Account Verified');
-                $this->flash('Account Verified');
-                $_SESSION['auth'] = $user;
-                return $this->redirect($response, 'root');
-            }else{
-                $this->flash("Token Expired", 'error');
-                var_dump($user);
-                return $this->redirect($response, 'login');
-            }
-
-        }
-        return $this->redirect($response, 'login');
-
-    }
-
-   public function postRegister(RequestInterface $request, ResponseInterface $response)
-   {
-       $errors = [];
-       Validator::email()->validate($request->getParam('email') || $errors['email'] = 'Please enter a valid email');
-       Validator::notEmpty()->validate($request->getParam('username') || $errors['name'] = 'Please enter a username');
-       Validator::notEmpty()->validate($request->getParam('password') || $errors['password'] = 'Please enter a password');
-       Validator::notEmpty()->validate($request->getParam('password_confirm') || $errors['password'] = 'Please confirm your password');
-       if($request->getParam('password') != $request->getParam('password_confirm')){
-           $errors['password_confirm'] = 'Not the same password';
-       }
-       if(strlen($request->getParam('username')) < 3 || strlen($request->getParam('username')) > 15 ||  !ctype_alnum($request->getParam('username'))){
-
-           $errors['username'] = 'Username error';
-       }
-       if($this->user_exists($request->getParam('username')) || $this->email_exists($request->getParam('email'))){
-           $errors['user_exist'] = 'User already exist';
-       }
-
-       if(empty($errors)){
-
-           $req = $this->db->prepare("INSERT INTO users SET username = ?, password = ?, email = ?, confirmation_token = ?, vpn_pass = ?");
-           $password = password_hash($request->getParam('password'), PASSWORD_BCRYPT);
-           $token = $this->str_random(60);
-           $vpn_pass = $this->str_random(8);
-           $req->execute([$request->getParam('username'), $password, $request->getParam('email'), $token, $vpn_pass]);
-           $user_id = $this->db->lastInsertId();
-           $message = \Swift_Message::newInstance('Confirmation de votre compte')
-               ->setFrom(["noreply@vpnsox.org" => "VPNSox"])
-               ->setTo($request->getParam('email'))
-               ->setBody("Afin de valider votre compte merci de cliquer sur ce lien https://panel.vpnsox.org/login/{$user_id}/{$token}"
-               );
-           $this->mailer->send($message);
-           $this->addLog($request->getParam('username'), 'Account Created');
-           $this->flash('Un email de confirmation vous a été envoyé pour valider votre compte');
-           return $this->redirect($response, 'login');
-
-       }else{
-           $this->flash('Please check forms', 'error');
-           $this->flash($errors, 'errors');
-           return $this->redirect($response, 'register', 400);
-       }
-       return $this->redirect($response, 'login');
-
-   }
-
+    
 
 };
