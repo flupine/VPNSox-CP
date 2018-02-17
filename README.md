@@ -42,6 +42,8 @@ Steps:
 3) Clone files
 ```
 git clone https://github.com/flupine/VPNSox-CP.git
+cd VPNSox-CP
+composer install
 ```
 4) Configure your apache2 to point to public/ folder
 5) fill your credentials in /app/container.php
