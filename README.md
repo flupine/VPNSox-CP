@@ -25,8 +25,8 @@ Development Process
 -------------------
 
 The `master` branch is regularly built and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/flupine/JSCOIN/tags) are created
-regularly to indicate new official, stable release versions of JSCOIN.
+completely stable. [Tags](https://github.com/flupine/VPNSox-CP/tags) are created
+regularly to indicate new official, stable release versions of VPNSox-CP
 
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
 
